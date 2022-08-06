@@ -8,7 +8,11 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=nxor4
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nxor4
+      - MYSQL_HOST=db
     env_file:
       - db.env
 
@@ -21,8 +25,12 @@ services:
     restart: always
     volumes:
       - nextcloud:/var/www/html
+      - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
     environment:
       - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nxor4
       - REDIS_HOST=redis
     env_file:
       - db.env
@@ -34,7 +42,7 @@ services:
     build: ./web
     restart: always
     ports:
-      - 127.0.0.1:8080:80
+      - 10.1.0.1:8080:80
     volumes:
       - nextcloud:/var/www/html:ro
     depends_on:
